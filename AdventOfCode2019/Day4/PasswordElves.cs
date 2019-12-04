@@ -9,17 +9,16 @@ namespace AdventOfCode2019.Day4
     {
         public static void Day4()
         {
-            var filePath = CurrentDirectory.ToString() + "/Day3/resources/input.txt";
-            var instructions = System.IO.File.ReadAllLines(filePath);
             var count = GetPasswordCount(134792, 675810);
 
-            Console.WriteLine("Day 1: Problem 1 Answer: " + count);
+            Console.WriteLine("Day 4: Problem 1 Answer: " + count);
         }
 
         public static int GetPasswordCount(int start, int end)
         {
 
-           return Enumerable.Range(start, end + 1).Where(password => IsValidPassword(password)).Count();
+            var validPasswords = Enumerable.Range(start, end - start).Where(password => IsValidPassword(password)).ToList();
+            return validPasswords.Count();
         }
 
         public static Boolean IsValidPassword(int password)
