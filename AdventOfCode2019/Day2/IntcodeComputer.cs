@@ -13,10 +13,38 @@ namespace AdventOfCode2019.Day2
             var filePath = CurrentDirectory.ToString() + "/Day2/resources/input.txt";
             var lines = System.IO.File.ReadAllLines(filePath);
             var intCode = lines[0].Split(",").Select(int.Parse).ToList();
-            intCode[1] = 12;
-            intCode[2] = 2;
-            var processedIntCode = processIntCode(intCode, 0);
-            Console.WriteLine(String.Join(",", processedIntCode));
+
+
+            var newIntCode = new List<int>(intCode);
+            newIntCode[1] = 12;
+            newIntCode[2] = 2;
+            var processedIntCode = processIntCode(newIntCode, 0);
+
+            Console.WriteLine("Day 2, Problem 1: " + processedIntCode[0]);
+
+            
+            foreach(var noun in Enumerable.Range(0, 99))
+            {
+                foreach(var verb in Enumerable.Range(0, 99))
+                {
+                    newIntCode = new List<int>(intCode);
+                    newIntCode[1] = noun;
+                    newIntCode[2] = verb;
+                    var result = processIntCode(newIntCode, 0)[0];
+                    if (result == 19690720)
+                    {
+
+                        Console.WriteLine(
+                            "Day 2, Problem 2:" +
+                            " Noun: " + noun +
+                            " Verb: " + verb +
+                            " Result: " + result +
+                            " Answer: " + ((100 * noun) + verb));
+                        
+                    }
+                }
+
+            }
         }
 
         public static List<int> processIntCode(List<int> intCode, int startingPosition)
@@ -33,7 +61,7 @@ namespace AdventOfCode2019.Day2
             var value1 = intCode[value1Address];
             var value2 = intCode[value2Address];
 
-           
+
 
             intCode[resultAddress] = processOperation(opCode, value1, value2);
 
