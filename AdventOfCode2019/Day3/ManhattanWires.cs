@@ -1,11 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using static System.Environment;
+
 
 namespace AdventOfCode2019.Day3
 {
     public class ManhattanWires
     {
+
+        public static void Day3()
+        {
+            var filePath = CurrentDirectory.ToString() + "/Day3/resources/input.txt";
+            var instructions = System.IO.File.ReadAllLines(filePath);
+            var distance = GetDistance(instructions.First(), instructions.Last());
+            Console.WriteLine("Day 3: Problem 1 Answer: " + distance);
+        }
+
+
         public static int GetDistance(string wireAInstructions, string wireBInstructions)
         {
 
@@ -51,7 +63,7 @@ namespace AdventOfCode2019.Day3
                
 
                 var line = GetLine(path.Last(), direction, distance);
-                Console.WriteLine(String.Join("\n" + distance + direction, line) );
+              
                 path.AddRange(line);
 
             }

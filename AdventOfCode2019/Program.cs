@@ -7,6 +7,7 @@ namespace AdventOfCode2019
         {
             AdventOfCodeDay1.FuelCalculator.Day1();
             AdventOfCode2019.Day2.IntcodeComputer.processIntCodeFromFile();
+            AdventOfCode2019.Day3.ManhattanWires.Day3();
 
                    
         }
