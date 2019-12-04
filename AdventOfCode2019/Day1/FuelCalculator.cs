@@ -8,9 +8,8 @@ namespace AdventOfCodeDay1
     public class FuelCalculator
     {
 
-        static void Main(string[] args)
+        public static void Day1()
         {
-
             var filePath = CurrentDirectory.ToString() + "/Day1/resources/input.txt";
             var lines = System.IO.File.ReadAllLines(filePath);
             var fuels = lines.Select(line => GetFuel(float.Parse(line))).ToList();
