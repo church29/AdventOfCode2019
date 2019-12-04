@@ -8,12 +8,18 @@
   <ItemGroup>
     <Folder Include="Day1\" />
     <Folder Include="Day1\resources\" />
+    <Folder Include="Day2\" />
+    <Folder Include="Day2\resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Day1\resources\input.txt" />
+    <None Remove="Day2\resources\input.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Day1\resources\input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Day2\resources\input.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1,10 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using static System.Environment;
 
 namespace AdventOfCode2019.Day2
 {
     public class IntcodeComputer
     {
+
+        public static void processIntCodeFromFile()
+        {
+            var filePath = CurrentDirectory.ToString() + "/Day2/resources/input.txt";
+            var lines = System.IO.File.ReadAllLines(filePath);
+            var intCode = lines[0].Split(",").Select(int.Parse).ToList();
+            intCode[1] = 12;
+            intCode[2] = 2;
+            var processedIntCode = processIntCode(intCode, 0);
+            Console.WriteLine(String.Join(",", processedIntCode));
+        }
+
         public static List<int> processIntCode(List<int> intCode, int startingPosition)
         {
             var opCode = intCode[startingPosition];
