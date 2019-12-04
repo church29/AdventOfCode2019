@@ -10,10 +10,13 @@
     <Folder Include="Day1\resources\" />
     <Folder Include="Day2\" />
     <Folder Include="Day2\resources\" />
+    <Folder Include="Day3\" />
+    <Folder Include="Day3\resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Day1\resources\input.txt" />
     <None Remove="Day2\resources\input.txt" />
+    <None Remove="Day3\ManhattanWires.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Day1\resources\input.txt">
