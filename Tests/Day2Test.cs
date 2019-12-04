@@ -2,12 +2,10 @@
 using System.Linq;
 using NUnit.Framework;
 
-namespace AdventOfCode2019.Day2
+namespace AdventOfCode2019.Day2 {
 
-{
     [TestFixture]
-    public class IntCodeComputerTest
-    {
+    public class IntCodeComputerTest {
 
         [Test]
         [TestCase("1,0,0,0,99", "2,0,0,0,99")]

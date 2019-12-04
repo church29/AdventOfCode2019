@@ -2,12 +2,10 @@
 using System.Linq;
 using NUnit.Framework;
 
-namespace AdventOfCode2019.Day3
+namespace AdventOfCode2019.Day3 {
 
-{
     [TestFixture]
-    public class ManhattanWiresTest
-    {
+    public class ManhattanWiresTest {
 
         [Test]
         [TestCase("R8,U5,L5,D3", "U7,R6,D4,L4", 6)]
@@ -19,7 +17,7 @@ namespace AdventOfCode2019.Day3
                 ManhattanWires.GetDistance(wireA, wireB)
                 );
 
-              
+
 
     }
 }

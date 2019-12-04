@@ -2,12 +2,10 @@
 using System.Linq;
 using NUnit.Framework;
 
-namespace AdventOfCode2019.Day4
+namespace AdventOfCode2019.Day4 {
 
-{
     [TestFixture]
-    public class PasswordElvesTest
-    {
+    public class PasswordElvesTest {
 
         [Test]
         [TestCase(111111, true)]
@@ -34,8 +32,5 @@ namespace AdventOfCode2019.Day4
                 PasswordElves.IsValidPassword(password, true)
 
                 );
-
-
-
-    }
+                           }
 }
