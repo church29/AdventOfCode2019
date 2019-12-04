@@ -27,6 +27,12 @@ namespace AdventOfCode2019.Day3
 
             var distance = intersections.Select(coordinate => Math.Abs(coordinate.Item1) + Math.Abs(coordinate.Item2)).Min();
 
+            var wireASteps = intersections.Select(intersection => wireAPath.IndexOf(intersection)).ToList();
+            var wireBSteps = intersections.Select(intersection => wireBPath.IndexOf(intersection)).ToList();
+
+            var minSteps = Enumerable.Range(0, intersections.Count()).Select(index => wireASteps[index] + wireBSteps[index]).Min();
+            Console.WriteLine("Day 3: Problem 2 Answer: " + minSteps);
+
             return distance;
         }
 
@@ -75,7 +81,7 @@ namespace AdventOfCode2019.Day3
         public static List<(int, int)> GetLine((int, int) position, char direction, int distance)
         {
             var line = new List<(int, int)>();
-            var range = Enumerable.Range(0, distance + 1);
+            var range = Enumerable.Range(0, distance + 1).Skip(1);
             
             switch (direction)
             {
