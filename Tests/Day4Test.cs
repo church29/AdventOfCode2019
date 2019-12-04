@@ -18,7 +18,20 @@ namespace AdventOfCode2019.Day4
         public void Test_IsValidPassword(int password, Boolean expected) =>
             Assert.AreEqual(
                 expected,
-                PasswordElves.IsValidPassword(password)
+                PasswordElves.IsValidPassword(password, false)
+
+                );
+
+        [Test]
+        [TestCase(111111, false)]
+        [TestCase(122222, false)]
+        [TestCase(112233, true)]
+        [TestCase(123444, false)]
+        [TestCase(111122, true)]
+        public void Test_IsValidPasswordAdditionalCriteria(int password, Boolean expected) =>
+            Assert.AreEqual(
+                expected,
+                PasswordElves.IsValidPassword(password, true)
 
                 );
 
