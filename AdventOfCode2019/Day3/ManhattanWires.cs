@@ -11,9 +11,6 @@ namespace AdventOfCode2019.Day3
 
             var wireAPath = GetPath(wireAInstructions.Split(",").ToList());
             var wireBPath = GetPath(wireBInstructions.Split(",").ToList());
-
-
-
             var intersections = GetIntersections(wireAPath, wireBPath);
 
             var distance = intersections.Select(coordinate => Math.Abs(coordinate.Item1) + Math.Abs(coordinate.Item2)).Min();
@@ -51,7 +48,10 @@ namespace AdventOfCode2019.Day3
                 char direction = instruction[0];
                 var distance = int.Parse(String.Join("", instruction.Skip(1).ToArray()));
 
+               
+
                 var line = GetLine(path.Last(), direction, distance);
+                Console.WriteLine(String.Join("\n" + distance + direction, line) );
                 path.AddRange(line);
 
             }
@@ -63,31 +63,32 @@ namespace AdventOfCode2019.Day3
         public static List<(int, int)> GetLine((int, int) position, char direction, int distance)
         {
             var line = new List<(int, int)>();
+            var range = Enumerable.Range(0, distance + 1);
             
             switch (direction)
             {
                 case 'U':
-                    foreach (int y in Enumerable.Range(position.Item2, position.Item2 + distance + 1).Skip(1))
+                    foreach (int y in range)
                     {
-                        line.Add((position.Item1, y));
+                        line.Add((position.Item1, position.Item2 + y));
                     }
                     break;
                 case 'D':
-                    foreach (int y in Enumerable.Range(position.Item2 - distance, position.Item2).Reverse().Skip(1))
+                    foreach (int y in range)
                     {
-                        line.Add((position.Item1, y));
+                        line.Add((position.Item1, position.Item2 - y));
                     }
                     break;
                 case 'R':
-                    foreach (int x in Enumerable.Range(position.Item1, position.Item1 + distance + 1).Skip(1))
+                    foreach (int x in range)
                     {
-                        line.Add((x, position.Item2));
+                        line.Add((position.Item1 + x, position.Item2));
                     }
                     break;
                 case 'L':
-                    foreach (int x in Enumerable.Range(position.Item1 - distance, position.Item1).Reverse().Skip(1))
+                    foreach (int x in range)
                     {
-                        line.Add((x, position.Item2));
+                        line.Add((position.Item1 - x, position.Item2));
                     }
                     break;
 
