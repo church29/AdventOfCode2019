@@ -39,7 +39,7 @@ namespace AdventOfCode2019.Day2 {
 
         public static List<int> processIntCode(List<int> intCode, int startingPosition, int INPUT = 1) {
             var instructionCode = intCode[startingPosition];
-            var opCode = int.Parse(instructionCode.ToString()[^1].ToString());
+            var opCode = instructionCode % 100;
             var param1Mode = instructionCode.ToString().Length >= 3 ? int.Parse(instructionCode.ToString()[^3].ToString()) : 0;
             var param2Mode = instructionCode.ToString().Length >= 4 ? int.Parse(instructionCode.ToString()[^4].ToString()) : 0;
             var param3Mode = instructionCode.ToString().Length >= 5 ? int.Parse(instructionCode.ToString()[^5].ToString()) : 0;
@@ -54,7 +54,7 @@ namespace AdventOfCode2019.Day2 {
             );
             */
 
-            if (opCode == 9) {
+            if (opCode == 99) {
                 return intCode;
             }
 
