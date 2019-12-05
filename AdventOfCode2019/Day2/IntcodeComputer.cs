@@ -41,15 +41,24 @@ namespace AdventOfCode2019.Day2 {
 
         public static List<int> processIntCode(List<int> intCode, int startingPosition) {
             var instructionCode = intCode[startingPosition];
-            var opCode = int.Parse("0" + instructionCode.ToString()[^1].ToString());
-
-            if (opCode == 99) {
-                return intCode;
-            }
-
+            var opCode = int.Parse(instructionCode.ToString()[^1].ToString());
             var param1Mode = instructionCode.ToString().Length >= 3 ? int.Parse(instructionCode.ToString()[^3].ToString()) : 0;
             var param2Mode = instructionCode.ToString().Length >= 4 ? int.Parse(instructionCode.ToString()[^4].ToString()) : 0;
             var param3Mode = instructionCode.ToString().Length >= 5 ? int.Parse(instructionCode.ToString()[^5].ToString()) : 0;
+
+            /*
+            Console.WriteLine(
+                "instructionCode: " + instructionCode +
+                " opCode " + opCode +
+                " param1Mode: " + param1Mode +
+                " param2Mode: " + param2Mode +
+                " param3Mode: " + param3Mode
+            );
+            */
+
+            if (opCode == 9) {
+                return intCode;
+            }
 
             var value1Address = intCode[startingPosition + 1];
             var value1 = param1Mode == 0 ? intCode[value1Address] : value1Address;
@@ -57,7 +66,6 @@ namespace AdventOfCode2019.Day2 {
             if (opCode == 3) {
                 intCode[value1Address] = INPUT;
                 Console.WriteLine("INPUT: opCode 3 Input " + INPUT + " at : " + value1Address + " instructionCode: " + instructionCode + "\n");
-
                 return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
             } else if (opCode == 4) {
                 Console.WriteLine("OUTPUT: opCode 4 Output at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
@@ -69,7 +77,7 @@ namespace AdventOfCode2019.Day2 {
 
             if (opCode == 5) {
                 if (value1 != 0) {
-                    Console.WriteLine("opCode 5 Jump To at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
+                    // Console.WriteLine("opCode 5 Jump To at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
                     return processIntCode(intCode, value2);
                 }
                 return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
@@ -77,7 +85,7 @@ namespace AdventOfCode2019.Day2 {
 
             if (opCode == 6) {
                 if (value1 == 0) {
-                    Console.WriteLine("opCode 6 Jump To at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
+                    // Console.WriteLine("opCode 6 Jump To at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
                     return processIntCode(intCode, value2);
                 }
                 return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
@@ -87,19 +95,16 @@ namespace AdventOfCode2019.Day2 {
             var result = processOperation(opCode, value1, value2);
             intCode[resultAddress] = result;
 
+            /*
             Console.WriteLine(
-                "instructionCode: " + instructionCode +
-                " opCode " + opCode +
-                " param1Mode: " + param1Mode +
-                " param2Mode: " + param2Mode +
-                " param3Mode: " + param3Mode +
-                " value1Address: " + value1Address +
+                "value1Address: " + value1Address +
                 " value1: " + value1 +
                 " value2Address: " + value2Address +
                 " value2: " + value2 +
                 " resultAddress: " + resultAddress +
                 " result: " + result);
-
+            */
+            
             return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
         }
 
