@@ -13,6 +13,8 @@
     <Folder Include="Day3\" />
     <Folder Include="Day3\resources\" />
     <Folder Include="Day4\" />
+    <Folder Include="Day5\" />
+    <Folder Include="Day5\resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Day1\resources\input.txt" />
