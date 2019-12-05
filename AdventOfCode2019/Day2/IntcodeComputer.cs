@@ -43,7 +43,6 @@ namespace AdventOfCode2019.Day2 {
             var instructionCode = intCode[startingPosition];
             var opCode = int.Parse("0" + instructionCode.ToString()[^1].ToString());
 
-
             if (opCode == 99) {
                 return intCode;
             }
@@ -57,78 +56,36 @@ namespace AdventOfCode2019.Day2 {
 
             if (opCode == 3) {
                 intCode[value1Address] = INPUT;
-                Console.WriteLine("opCode 3 Input " + INPUT + " at : " + value1Address + " instructionCode: " + instructionCode);
+                Console.WriteLine("INPUT: opCode 3 Input " + INPUT + " at : " + value1Address + " instructionCode: " + instructionCode + "\n");
 
-                return processIntCode(intCode, startingPosition + 2);
+                return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
             } else if (opCode == 4) {
                 Console.WriteLine("OUTPUT: opCode 4 Output at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
-                return processIntCode(intCode, startingPosition + 2);
-
+                return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
             }
 
-
-            Console.WriteLine(
-               "instructionCode: " + instructionCode +
-               " opCode " + opCode +
-               " param1Mode: " + param1Mode +
-
-               " value1Address: " + value1Address +
-               " value1: " + value1
-              
-               );
             var value2Address = intCode[startingPosition + 2];
             var value2 = param2Mode == 0 ? intCode[value2Address] : value2Address;
 
-
             if (opCode == 5) {
-
                 if (value1 != 0) {
-
-
                     Console.WriteLine("opCode 5 Jump To at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
-                    Console.WriteLine(
-                "instructionCode: " + instructionCode +
-                " opCode " + opCode +
-                " param1Mode: " + param1Mode +
-
-                " value1Address: " + value1Address +
-                " value1: " + value1 +
-                 " value2Address: " + value2Address +
-                " value2: " + value2
-                );
                     return processIntCode(intCode, value2);
                 }
-                return processIntCode(intCode, startingPosition + 3);
-
+                return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
             }
 
             if (opCode == 6) {
-
                 if (value1 == 0) {
-
-
                     Console.WriteLine("opCode 6 Jump To at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
                     return processIntCode(intCode, value2);
                 }
-                return processIntCode(intCode, startingPosition + 3);
-
-
+                return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
             }
 
-
             var resultAddress = intCode[startingPosition + 3];
-
-
-
-            var result = 1;
-
-            result = processOperation(opCode, value1, value2);
+            var result = processOperation(opCode, value1, value2);
             intCode[resultAddress] = result;
-
-
-
-
-
 
             Console.WriteLine(
                 "instructionCode: " + instructionCode +
@@ -143,21 +100,17 @@ namespace AdventOfCode2019.Day2 {
                 " resultAddress: " + resultAddress +
                 " result: " + result);
 
-
-            return processIntCode(intCode, startingPosition + 4);
-
+            return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
         }
 
         static int getIncrementFromOpCode(int opCode) {
             switch (opCode) {
-                case 1:
-                case 2:
-                return 4;
-
                 case 3:
                 case 4:
                 return 2;
-
+                case 5:
+                case 6:
+                return 3;
             }
 
             return 4;
