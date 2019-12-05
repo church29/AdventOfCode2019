@@ -1,29 +1,22 @@
 ﻿using System;
 using System.Linq;
+using AdventOfCode2019.Day2;
 using NUnit.Framework;
 
 namespace AdventOfCode2019.Day5 {
 
     [TestFixture]
-    public class ElvesTest {
+    public class IntCodeComputerTest {
 
         [Test]
-        [TestCase(111111, true)]
-        [TestCase(223450, false)]
-        [TestCase(223455, true)]
-        [TestCase(123789, false)]
-        [TestCase(113789, true)]
-        public void Test_IsValid(int password, Boolean expected) =>
+        [TestCase("1,0,0,0,99", "2,0,0,0,99")]
+        [TestCase("2,3,0,3,99", "2,3,0,6,99")]
+        [TestCase("2,4,4,5,99,0", "2,4,4,5,99,9801")]
+        [TestCase("1,1,1,4,99,5,6,0,99", "30,1,1,4,2,5,6,0,99")]
+        public void Test_ProcessIntCode(string input, string expectedResult) =>
             Assert.AreEqual(
-                expected,
-                true
-            );
+                expectedResult,
+                String.Join(",", IntcodeComputer.processIntCode(input.Split(",").Select(int.Parse).ToList(), 0).ToArray()));
 
-        [Test]
-        [TestCase("3,225,1,225,6,6,1100,1,238,225,104,0,1101,34,7,225,101,17,169,224,1001,224,-92,224,4,99", false)]
-
-        public void Test_IsValid2(string password, Boolean expected) =>
-            Day2.IntcodeComputer.processIntCode(password.Split(",").Select(int.Parse).ToList(), 0);
-            
     }
 }
