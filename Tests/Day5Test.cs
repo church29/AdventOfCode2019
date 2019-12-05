@@ -20,15 +20,10 @@ namespace AdventOfCode2019.Day5 {
             );
 
         [Test]
-        [TestCase(111111, false)]
-        [TestCase(122222, false)]
-        [TestCase(112233, true)]
-        [TestCase(123444, false)]
-        [TestCase(111122, true)]
-        public void Test_IsValid2(int password, Boolean expected) =>
-            Assert.AreEqual(
-                expected,
-                true
-            );
+        [TestCase("3,225,1,225,6,6,1100,1,238,225,104,0,1101,34,7,225,101,17,169,224,1001,224,-92,224,4,99", false)]
+
+        public void Test_IsValid2(string password, Boolean expected) =>
+            Day2.IntcodeComputer.processIntCode(password.Split(",").Select(int.Parse).ToList(), 0);
+            
     }
 }

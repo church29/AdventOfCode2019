@@ -9,7 +9,7 @@ namespace AdventOfCode2019.Day5 {
             var lines = System.IO.File.ReadAllLines(filePath);
             var intCodes = lines.Select(line => line.Split(",").Select(int.Parse).ToList());
             foreach(var intCode in intCodes) {
-                Day2.IntcodeComputer.processIntCode(intCode, 0, 0);
+                Day2.IntcodeComputer.processIntCode(intCode, 0);
             }
             
         }
