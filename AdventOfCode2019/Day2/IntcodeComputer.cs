@@ -76,19 +76,11 @@ namespace AdventOfCode2019.Day2 {
             var value2 = param2Mode == 0 ? intCode[value2Address] : value2Address;
 
             if (opCode == 5) {
-                if (value1 != 0) {
-                    // Console.WriteLine("opCode 5 Jump To at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
-                    return processIntCode(intCode, value2);
-                }
-                return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
+                return processIntCode(intCode, value1 != 0 ? value2 : (startingPosition + getIncrementFromOpCode(opCode)));
             }
 
             if (opCode == 6) {
-                if (value1 == 0) {
-                    // Console.WriteLine("opCode 6 Jump To at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
-                    return processIntCode(intCode, value2);
-                }
-                return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
+                return processIntCode(intCode, value1 == 0 ? value2 : (startingPosition + getIncrementFromOpCode(opCode)));
             }
 
             var resultAddress = intCode[startingPosition + 3];
@@ -104,7 +96,7 @@ namespace AdventOfCode2019.Day2 {
                 " resultAddress: " + resultAddress +
                 " result: " + result);
             */
-            
+
             return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode));
         }
 
@@ -116,9 +108,9 @@ namespace AdventOfCode2019.Day2 {
                 case 5:
                 case 6:
                 return 3;
+                default:
+                return 4;
             }
-
-            return 4;
         }
 
         static int processOperation(int opCode, int value1, int value2) {
