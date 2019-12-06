@@ -15,6 +15,8 @@
     <Folder Include="Day4\" />
     <Folder Include="Day5\" />
     <Folder Include="Day5\resources\" />
+    <Folder Include="Day6\" />
+    <Folder Include="Day6\resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Day1\resources\input.txt" />
@@ -22,6 +24,7 @@
     <None Remove="Day3\ManhattanWires.config" />
     <None Remove="Day3\resources\EmptyTextFile.txt" />
     <None Remove="Day5\resources\input.txt" />
+    <None Remove="Day6\resources\input.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Day1\resources\input.txt">
@@ -34,6 +37,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Day5\resources\input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Day6\resources\input.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
