@@ -12,9 +12,9 @@ namespace AdventOfCode2019.Day6 {
 
             var numOrbits = CalculateNumOrbits(lines.ToList());
             Console.WriteLine("Day 6: Problem 1: " + numOrbits);
+
             var numJumpsToSanta = GetNumJumpsToSanta(lines.ToList());
             Console.WriteLine("Day 6: Problem 2: " + numJumpsToSanta);
-
         }
 
         public static int CalculateNumOrbits(List<string> orbitList) {
@@ -22,20 +22,17 @@ namespace AdventOfCode2019.Day6 {
             var numOrbits = 0;
             foreach (var planet in orbitMap.Keys) {
                 numOrbits += CalculateNumOrbitsForPlanet(orbitMap, planet);
-
             }
-
             return numOrbits;
         }
 
         public static Dictionary<string, string> GetOrbitMap(List<string> orbitList) {
             var orbitMap = new Dictionary<string, string>();
             foreach (var orbit in orbitList) {
-                var orbits = orbit.Split(")");
-                if (orbits.Length > 1) {
-                    orbitMap.Add(orbits[1], orbits[0]);
+                var planets = orbit.Split(")");
+                if (planets.Length > 1) {
+                    orbitMap.Add(planets[1], planets[0]);
                 }
-
             }
 
             return orbitMap;
@@ -62,7 +59,6 @@ namespace AdventOfCode2019.Day6 {
 
             var intersectionOrbits = orbitListForYou.Intersect(orbitListForSanta);
             var firstIntersection = intersectionOrbits.First();
-            
 
             return orbitListForYou.IndexOf(firstIntersection) + orbitListForSanta.IndexOf(firstIntersection);
         }
@@ -73,7 +69,6 @@ namespace AdventOfCode2019.Day6 {
                 return orbitList;
             }
 
-            
             string orbitingAround;
             if (orbitMap.TryGetValue(planet, out orbitingAround)) {
                 orbitList.Add(orbitingAround);
