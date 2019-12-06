@@ -6,14 +6,13 @@ using static System.Environment;
 
 namespace AdventOfCode2019.Day6 {
     public class OrbitalSanta {
-        public static void Day6Problem() {
-            var filePath = CurrentDirectory.ToString() + "/Day5/resources/input.txt";
+        public static void Day6() {
+            var filePath = CurrentDirectory.ToString() + "/Day6/resources/input.txt";
             var lines = System.IO.File.ReadAllLines(filePath);
            
+            var numOrbits = CalculateNumOrbits(lines.ToList());
+            Console.WriteLine("Day 6: Problem 1: " + numOrbits);
 
-            Console.WriteLine("Day 6: Problem 1: ");
-            CalculateNumOrbits(lines.ToList());
-          
         }
 
         public static int CalculateNumOrbits(List<string> orbitList) {
@@ -31,7 +30,10 @@ namespace AdventOfCode2019.Day6 {
             var orbitMap = new Dictionary<string, string>();
             foreach(var orbit in orbitList) {
                 var orbits = orbit.Split(")");
-                orbitMap.Add(orbits[1], orbits[0]);
+                if (orbits.Length > 1) {
+                    orbitMap.Add(orbits[1], orbits[0]);
+                }
+                
             }
 
             return orbitMap;
