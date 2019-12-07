@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using static System.Environment;
@@ -8,22 +9,59 @@ namespace AdventOfCode2019.Day7 {
         public static void Day7() {
             var filePath = CurrentDirectory.ToString() + "/Day7/resources/input.txt";
             var lines = System.IO.File.ReadAllLines(filePath);
-        }
+            var intcode = lines.First().Split(",").Select(int.Parse).ToList();
 
-        public static int getMaxThrusterAtPhaseSetting(List<int> intCode, List<int> phaseSetting) {
-            var input = 0;
-            foreach(var phase in phaseSetting) {
-                var inputs = new List<int>();
-                inputs.Add(phase);
-                inputs.Add(input);
-                input = processIntCode(intCode, 0, inputs).First();
+            var permutations = System.IO.File.ReadAllLines(CurrentDirectory.ToString() + "/Day7/resources/permutations.txt");
+
+
+            var maxes = new List<int>();
+
+            foreach (var permutation in permutations) {
+                maxes.Add(getMaxThrusterAtPhaseSetting(new List<int>(intcode), permutation.Select(Char.ToString).Select(int.Parse).ToList()));
+
             }
 
-            return input;
-            
+            Console.WriteLine("Day 7: Problem 1: " + maxes.Max());
+
+        }
+          
+                            
+        public static int getMaxThrusterAtPhaseSetting(
+            List<int> intCode,
+            List<int> phaseSetting,
+            Boolean feedbackMode = false,
+            int input = 0
+        ) {
+                                                       
+                       
+            foreach (var phase in phaseSetting) {
+                                
+                var inputs = new List<int>() {
+                     phase,
+                     input,
+                 };
+                var results = processIntCode(new List<int>(intCode), 0, inputs);
+
+                if (results.Count() == 0) {
+                    return input;
+
+                }
+
+                input = results.First();
+                
+
+            }
+
+            if (!feedbackMode) {
+                return input;
+            }
+                                 
+
+            return getMaxThrusterAtPhaseSetting(new List<int>(intCode), phaseSetting, feedbackMode, input);
+
         }
 
-    
+
         public static List<int> processIntCode(List<int> intCode, int startingPosition, List<int> inputs) {
             var instructionCode = intCode[startingPosition];
             var opCode = instructionCode % 100;
@@ -42,7 +80,8 @@ namespace AdventOfCode2019.Day7 {
             */
 
             if (opCode == 99) {
-                return intCode;
+                var results = new List<int>();
+                return results;
             }
 
             var value1Address = intCode[startingPosition + 1];
@@ -55,7 +94,9 @@ namespace AdventOfCode2019.Day7 {
                 return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode), inputs);
             } else if (opCode == 4) {
                 Console.WriteLine("OUTPUT: opCode 4 Output at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
-                return new List<int> { value1 };
+                var results = new List<int>() { value1 };
+                return results;
+
             }
 
             var value2Address = intCode[startingPosition + 2];
