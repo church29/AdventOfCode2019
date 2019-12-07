@@ -27,6 +27,22 @@ namespace AdventOfCode2019.Day7 {
 
             Console.WriteLine("Day 7: Problem 1: " + maxes.Max());
 
+            permutations = System.IO.File.ReadAllLines(CurrentDirectory.ToString() + "/Day7/resources/problem2.txt");
+
+
+            maxes = new List<int>();
+            intCodes = new Dictionary<int, List<int>>();
+            foreach (var permutation in permutations) {
+                maxes.Add(getMaxThrusterAtPhaseSetting(
+                    new List<int>(intcode),
+                    permutation.Select(Char.ToString).Select(int.Parse).ToList(),
+                    new List<int>() { 0, 0, 0, 0, 0 },
+                    intCodes
+                    ));
+            }
+
+            Console.WriteLine("Day 7: Problem 2: " + maxes.Max());
+
         }
 
         private static int getMaxThrusterAtPhaseSetting(List<int> list1, List<int> list2) {
