@@ -37,6 +37,12 @@ namespace AdventOfCode2019.Day2 {
             }
         }
 
+        public static List<int> processIntCode(List<int> intCode, int startingPosition, List<int> inputs) {
+
+
+            return intCode;
+        }
+
         public static List<int> processIntCode(List<int> intCode, int startingPosition, int INPUT = 1) {
             var instructionCode = intCode[startingPosition];
             var opCode = instructionCode % 100;
