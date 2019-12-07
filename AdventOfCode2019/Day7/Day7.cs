@@ -15,49 +15,76 @@ namespace AdventOfCode2019.Day7 {
 
 
             var maxes = new List<int>();
-
+            var intCodes = new Dictionary<int, List<int>>();
             foreach (var permutation in permutations) {
-                maxes.Add(getMaxThrusterAtPhaseSetting(new List<int>(intcode), permutation.Select(Char.ToString).Select(int.Parse).ToList()));
-
+                maxes.Add(getMaxThrusterAtPhaseSetting(
+                    new List<int>(intcode),
+                    permutation.Select(Char.ToString).Select(int.Parse).ToList(),
+                    new List<int>() { 0, 0, 0, 0, 0 },
+                    intCodes
+                    ));
             }
 
             Console.WriteLine("Day 7: Problem 1: " + maxes.Max());
 
         }
-          
-                            
+
+        private static int getMaxThrusterAtPhaseSetting(List<int> list1, List<int> list2) {
+            throw new NotImplementedException();
+        }
+
         public static int getMaxThrusterAtPhaseSetting(
             List<int> intCode,
             List<int> phaseSetting,
-            Boolean feedbackMode = false,
-            int input = 0
-        ) {
-                                                       
-                       
-            foreach (var phase in phaseSetting) {
-                                
-                var inputs = new List<int>() {
-                     phase,
-                     input,
-                 };
-                var results = processIntCode(new List<int>(intCode), 0, inputs);
+            List<int> startingPositions,
+            Dictionary<int, List<int>> intCodes,
+            int input = 0,
+            Boolean initialRun = true
 
+        ) {
+           
+            foreach (var phase in phaseSetting) {
+
+                var inputs = new List<int>();
+                if (initialRun) {
+                    inputs.Add(phase);
+                }
+
+                inputs.Add(input);
+
+                List<int> phaseCode = new List<int>();
+                var results = new List<int>();
+                if (intCodes.TryGetValue(phase, out phaseCode)) {
+
+                    results = processIntCode(phaseCode, startingPositions[phaseSetting.IndexOf(phase)], inputs);
+                    
+                } else {
+                    phaseCode = new List<int>(intCode);
+                    results = processIntCode(phaseCode, startingPositions[phaseSetting.IndexOf(phase)], inputs);
+                   
+                }
+
+                intCodes[phase] = phaseCode;
                 if (results.Count() == 0) {
                     return input;
 
                 }
 
                 input = results.First();
-                
-
+                startingPositions[phaseSetting.IndexOf(phase)] = results.Last();
+                                
             }
 
-            if (!feedbackMode) {
-                return input;
-            }
-                                 
 
-            return getMaxThrusterAtPhaseSetting(new List<int>(intCode), phaseSetting, feedbackMode, input);
+
+            return getMaxThrusterAtPhaseSetting(
+                new List<int>(intCode),
+                phaseSetting,
+                startingPositions,
+                intCodes,
+                input,
+                false
+             );
 
         }
 
@@ -94,7 +121,7 @@ namespace AdventOfCode2019.Day7 {
                 return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode), inputs);
             } else if (opCode == 4) {
                 Console.WriteLine("OUTPUT: opCode 4 Output at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
-                var results = new List<int>() { value1 };
+                var results = new List<int>() { value1, (startingPosition + getIncrementFromOpCode(opCode)) };
                 return results;
 
             }
@@ -132,6 +159,7 @@ namespace AdventOfCode2019.Day7 {
                 case 3:
                 case 4:
                 return 2;
+
                 case 5:
                 case 6:
                 return 3;
