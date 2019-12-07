@@ -33,6 +33,10 @@ namespace AdventOfCode2019.Day7 {
             throw new NotImplementedException();
         }
 
+        private class PhaseState {
+
+        }
+
         public static int getMaxThrusterAtPhaseSetting(
             List<int> intCode,
             List<int> phaseSetting,
