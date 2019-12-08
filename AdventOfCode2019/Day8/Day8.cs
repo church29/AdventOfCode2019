@@ -47,12 +47,12 @@ namespace AdventOfCode2019.Day8 {
                 }
 
                 xStart++;
-                if (xStart > width) {
+                if (xStart >= width) {
                     yStart++;
                     xStart = 0;
                 }
 
-                if(yStart > height) {
+                if(yStart >= height) {
                     yStart = 0;
                 }
                 
