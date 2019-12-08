@@ -8,7 +8,8 @@ namespace AdventOfCode2019 {
             // AdventOfCode2019.Day4.PasswordElves.Day4();
             // AdventOfCode2019.Day5.Day5.Day5Problem();
             // AdventOfCode2019.Day6.OrbitalSanta.Day6();
-            AdventOfCode2019.Day7.MultiInputIntCodeComputer.Day7();
+            // AdventOfCode2019.Day7.MultiInputIntCodeComputer.Day7();
+            AdventOfCode2019.Day8.BiosCracker.Day7();
 
         }
     }
