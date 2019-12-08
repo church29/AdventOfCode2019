@@ -7,7 +7,7 @@ using static System.Environment;
 namespace AdventOfCode2019.Day8 {
 
 
-
+    // 945 too low
     public class BiosCracker {
        
         public static int WIDTH = 25;
@@ -22,11 +22,56 @@ namespace AdventOfCode2019.Day8 {
             List<int> instructions = lines.First().Select(char.ToString).Select(int.Parse).ToList();
 
             var layers = GetLayers(instructions);
-            Console.WriteLine("Day 8: Problem 1: " + 0);
+
+            var layerCount = layers.Values.First().Count;
+
+           
+
+            List<int> count0s = new List<int>();
+            for(var i = 0; i < layerCount; i++) {
+                count0s.Add(0);
+            }
+
+
+            foreach(var pixel in layers.Values) {
+                for(var layer = 0; layer < layerCount; layer++) {
+                    if (pixel[layer] == 0) {
+                        count0s[layer]++;
+                    }
+                } 
+
+            }
+
+            
+
+            var least0s = count0s.IndexOf(count0s.Min());
+            int count1s = 0;
+            foreach (var pixel in layers.Values) {
+                
+                    if (pixel[least0s] == 1) {
+                        count1s++;
+                    }
+                
+
+            }
+
+            int count2s = 0;
+            foreach (var pixel in layers.Values) {
+
+                if (pixel[least0s] == 2) {
+                    count2s++;
+                }
+
+
+            }
+            Console.WriteLine("Day 8: Problem 1: " + count2s * count1s);
 
             
             Console.WriteLine("Day 8: Problem 2: " + 0);
         }
+
+
+        
 
         public static Dictionary<(int, int), List<int>> GetLayers(
             List<int> instructions,
