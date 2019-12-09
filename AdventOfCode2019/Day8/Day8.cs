@@ -5,15 +5,12 @@ using System.Linq;
 using static System.Environment;
 
 namespace AdventOfCode2019.Day8 {
-
-
-    // 945 too low
+  
     public class BiosCracker {
 
         public static int WIDTH = 25;
         public static int HEIGHT = 6;
-
-
+        
         public static void Day7() {
             var filePath = CurrentDirectory.ToString() + "/Day8/resources/input.txt";
             var lines = System.IO.File.ReadAllLines(filePath);
@@ -27,6 +24,7 @@ namespace AdventOfCode2019.Day8 {
             for (var i = 0; i < layerCount; i++) {
                 count0s.Add(0);
             }
+
 
             foreach (var pixel in layers.Values) {
                 for (var layer = 0; layer < layerCount; layer++) {
