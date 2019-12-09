@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using static System.Environment;
 using static System.Linq.Enumerable;
 
@@ -12,21 +13,28 @@ namespace AdventOfCode2019.Day9 {
             var lines = System.IO.File.ReadAllLines(filePath);
             var intCode = lines.First().Split(",").Select(long.Parse).ToList();
 
-            var output = processIntCode(intCode, 0, new List<long>() { 1 }, new List<long>(), 0);
+            var output = processIntCode(new List<long>(intCode), 0, new List<long>() { 1 }, new List<long>(), 0);
             Console.WriteLine("Day 9: Problem 1: " + String.Join(",", output));
 
+            output = new List<long>();
+            var thread =
+                new Thread(
+                    _ => processIntCode(new List<long>(intCode), 0, new List<long>() { 2 }, output, 0),
+              512000000); // ~ 128MB stack
 
-
-            Console.WriteLine("Day 9: Problem 2: " + 0);
+            thread.Start();
+            thread.Join();
+            
+            Console.WriteLine("Day 9: Problem 2: " + String.Join(",", output));
         }
 
-       
 
-       
+
+
         public static List<long> processIntCode(List<long> intCode, int startingPosition, List<long> inputs, List<long> output, long relativeBase = 0) {
-            if (intCode.Count < 4096) {
-                intCode.AddRange(Repeat(0L, 4096).ToList());
-                             
+            if (intCode.Count < 10000) {
+                intCode.AddRange(Repeat(0L, 10000).ToList());
+
             }
             var instructionCode = intCode[startingPosition];
             var opCode = instructionCode % 100;
@@ -47,18 +55,18 @@ namespace AdventOfCode2019.Day9 {
                 } else {
                     intCode[(int)value1Address] = inputs.First();
                 }
-               
+
                 inputs = inputs.Skip(1).ToList();
                 return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode), inputs, output, relativeBase);
             }
             if (opCode == 4) {
-                Console.WriteLine("OUTPUT: opCode 4 Output at value1Address: " + value1 + " instructionCode: " + instructionCode + "\n");
+                
                 output.Add(value1);
                 return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode), inputs, output, relativeBase);
 
             }
             if (opCode == 9) {
-                Console.WriteLine("new relative base: " + (relativeBase + value1));
+               
                 return processIntCode(intCode, startingPosition + getIncrementFromOpCode(opCode), inputs, output, relativeBase + value1);
             }
 
