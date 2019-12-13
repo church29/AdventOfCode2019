@@ -12,7 +12,7 @@ namespace AdventOfCode2019.Day12 {
 
 
         public static void Day12() {
-            var filePath = CurrentDirectory.ToString() + "/Day12/resources/test1.txt";
+            var filePath = CurrentDirectory.ToString() + "/Day12/resources/input.txt";
             var lines = System.IO.File.ReadAllLines(filePath);
 
             var coordinates = GetCoordinates(lines.ToList());
@@ -42,7 +42,7 @@ namespace AdventOfCode2019.Day12 {
 
             var totalEnergy = GetTotalEnergy(coordinates, velocities);
 
-            Console.WriteLine("Day 12: Problem 2: " + totalEnergy);
+            Console.WriteLine("Day 12: Problem 1: " + totalEnergy);
 
         }
 
@@ -65,24 +65,33 @@ namespace AdventOfCode2019.Day12 {
             var cs = new List<List<int>>(coordinates);
             var vs = new List<List<int>>(velocities);
 
-            var steps = new List<List<string>>();
+            var steps = new List<Dictionary<string, string>>();
             var axii = new List<int> { 0, 1, 2 };
-            steps.Add(new List<string>());
-            steps.Add(new List<string>());
-            steps.Add(new List<string>());
+            steps.Add(new Dictionary<string, string>());
+            steps.Add(new Dictionary<string, string>());
+            steps.Add(new Dictionary<string, string>());
+           
             while (true) {
                 foreach (var axis in axii) {
                     var coordinateString = string.Join(",", cs.Select(coordinate => coordinate[axis]).ToList());
                     var velocityString = string.Join(",", vs.Select(coordinate => coordinate[axis]).ToList());
                     var hash = coordinateString + velocityString;
 
-                    if (steps[axis].Contains(hash)) {
-                        axisCounts[axis] = steps[axis].Count;
+                    if (steps[axis].Keys.Contains(coordinateString) && steps[axis][coordinateString].Contains(velocityString)) {
+                        List<string> values = steps[axis].Values.ToList();
+                        axisCounts[axis] = values.Select(vHash => vHash.Split(":").Count()).Sum();
                     } else {
-                        steps[axis].Add(hash);
+                        if (steps[axis].Keys.Contains(coordinateString)) {
+                            steps[axis][coordinateString] += (":" + velocityString);
+                        } else {
+                            steps[axis][coordinateString] = (velocityString);
+                        }
+                        
                     }
 
                 }
+
+                axii = axii.Except(axisCounts.Keys).ToList();
 
                 if (axisCounts.Count == 3) {
                     break;
@@ -98,25 +107,26 @@ namespace AdventOfCode2019.Day12 {
                     moon[1] += velocity[1];
                     moon[2] += velocity[2];
 
-
                 }
 
             }
 
+            var counts = axisCounts.Values.ToList();
+            counts.Sort();
+            var xy = GetSmallestVector(counts[0], counts[1]);
+            var xyLCM = Math.Min(xy.Item1, xy.Item2) * Math.Max(counts[0], counts[1]) ;
+            var xyz = GetSmallestVector(xyLCM, counts[2]);
+            long xyzLCM = (long)Math.Max(xyz.Item1, xyz.Item2) * (long)Math.Min(xyLCM, counts[2]);
 
-            var xy = GetSmallestVector(axisCounts[0], axisCounts[1]);
-            var xyz = GetSmallestVector(xy.Item1 * xy.Item2, axisCounts[2]);
-
-
-            Console.WriteLine("Day 12: Problem 2: " + xyz.Item1 * xyz.Item2);
+            Console.WriteLine("Day 12: Problem 2: " + xyzLCM);
 
 
 
         }
 
-        public static (int, int) GetSmallestVector(int xDelta, int yDelta) {
+        public static (long, long) GetSmallestVector(long xDelta, long yDelta) {
             var smaller = xDelta == 0 || (yDelta != 0 && xDelta > yDelta) ? Math.Abs(yDelta) : Math.Abs(xDelta);
-            var range = Enumerable.Range(1, smaller + 1).Reverse();
+            var range = Enumerable.Range(1, (int)smaller + 1).Reverse();
 
             foreach (var i in range) {
                 if (xDelta % i == 0 && yDelta % i == 0) {
