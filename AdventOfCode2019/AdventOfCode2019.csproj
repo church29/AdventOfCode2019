@@ -27,6 +27,8 @@
     <Folder Include="Day10\resources\" />
     <Folder Include="Day11\" />
     <Folder Include="Day11\resources\" />
+    <Folder Include="Day12\" />
+    <Folder Include="Day12\resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Day1\resources\input.txt" />
@@ -91,6 +93,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Day11\resources\input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Day12\resources\input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Day12\resources\test1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Day12\resources\test2.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

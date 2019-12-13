@@ -12,7 +12,8 @@ namespace AdventOfCode2019 {
             // AdventOfCode2019.Day8.BiosCracker.Day7();
             // AdventOfCode2019.Day9.BoostIntCodeComputer.Day9();
             // AdventOfCode2019.Day10.MonitoringStation.Day10();
-            AdventOfCode2019.Day11.HullPainter.Day11();
+            // AdventOfCode2019.Day11.HullPainter.Day11();
+            AdventOfCode2019.Day12.MoonEnergy.Day12();
 
 
         }
