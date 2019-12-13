@@ -12,7 +12,7 @@ namespace AdventOfCode2019.Day12 {
 
 
         public static void Day12() {
-            var filePath = CurrentDirectory.ToString() + "/Day12/resources/test2.txt";
+            var filePath = CurrentDirectory.ToString() + "/Day12/resources/test1.txt";
             var lines = System.IO.File.ReadAllLines(filePath);
 
             var coordinates = GetCoordinates(lines.ToList());
@@ -39,6 +39,14 @@ namespace AdventOfCode2019.Day12 {
                 }
             }
 
+
+            var totalEnergy = GetTotalEnergy(coordinates, velocities);
+
+            Console.WriteLine("Day 12: Problem 2: " + totalEnergy);
+
+        }
+
+        public static long GetTotalEnergy(List<List<int>> coordinates, List<List<int>> velocities) {
             var potentialEnergy = coordinates.Select(coordinate => Math.Abs(coordinate[0]) + Math.Abs(coordinate[1]) + Math.Abs(coordinate[2])).ToList();
             var kineticyEnergy = velocities.Select(coordinate => Math.Abs(coordinate[0]) + Math.Abs(coordinate[1]) + Math.Abs(coordinate[2])).ToList();
 
@@ -47,59 +55,76 @@ namespace AdventOfCode2019.Day12 {
                 totalEnergy += potentialEnergy[i] * kineticyEnergy[i];
             }
 
-            Console.WriteLine("Total Energy: " + totalEnergy);
-
+            return totalEnergy;
         }
 
         public static void RunSimulationIndefinitely(List<List<int>> coordinates, List<List<int>> velocities) {
-            var steps = new Dictionary<string, List<string>>();
-            var lastStep = ("", "");
-            long count = 0;
-            List<string> velocityHashes;
+            var axisCounts = new Dictionary<int, int>();
+
+
+            var cs = new List<List<int>>(coordinates);
+            var vs = new List<List<int>>(velocities);
+
+            var steps = new List<List<string>>();
+            var axii = new List<int> { 0, 1, 2 };
+            steps.Add(new List<string>());
+            steps.Add(new List<string>());
+            steps.Add(new List<string>());
             while (true) {
-                var coordinateString = string.Join(",", coordinates.Select(coordinate => "" + coordinate[0] + coordinate[1] + coordinate[2]).ToList());
-                var velocityString = string.Join(",", velocities.Select(coordinate => "" + coordinate[0] + coordinate[1] + coordinate[2]).ToList());
-                if (velocityString.Replace("0", "").Length == 0) {
+                foreach (var axis in axii) {
+                    var coordinateString = string.Join(",", cs.Select(coordinate => coordinate[axis]).ToList());
+                    var velocityString = string.Join(",", vs.Select(coordinate => coordinate[axis]).ToList());
+                    var hash = coordinateString + velocityString;
+
+                    if (steps[axis].Contains(hash)) {
+                        axisCounts[axis] = steps[axis].Count;
+                    } else {
+                        steps[axis].Add(hash);
+                    }
+
+                }
+
+                if (axisCounts.Count == 3) {
                     break;
                 }
-                //if (lastStep.Item1 == coordinateString && lastStep.Item2 == velocityString) {
-                //    break;
-                //}
-
-                lastStep = (coordinateString, velocityString);
-
-
-                
-                if (steps.TryGetValue(coordinateString, out velocityHashes)) {
-                    if (velocityHashes.Contains(velocityString)) {
-                        break;
-                    }
-                    steps[coordinateString].Add(velocityString);
-
-                } else {
-                    steps.Add(coordinateString, new List<string> { velocityString });
-                }
-                
 
 
 
-
-                velocities = CalculateVelocities(coordinates, velocities);
-                for (var i = 0; i < coordinates.Count; i++) {
-                    var moon = coordinates[i];
-                    var velocity = velocities[i];
+                velocities = CalculateVelocities(cs, vs);
+                for (var j = 0; j < cs.Count; j++) {
+                    var moon = cs[j];
+                    var velocity = vs[j];
                     moon[0] += velocity[0];
                     moon[1] += velocity[1];
                     moon[2] += velocity[2];
+
+
                 }
-                count++;
 
             }
 
-            Console.WriteLine("Total Steps: " + count);
+
+            var xy = GetSmallestVector(axisCounts[0], axisCounts[1]);
+            var xyz = GetSmallestVector(xy.Item1 * xy.Item2, axisCounts[2]);
+
+
+            Console.WriteLine("Day 12: Problem 2: " + xyz.Item1 * xyz.Item2);
 
 
 
+        }
+
+        public static (int, int) GetSmallestVector(int xDelta, int yDelta) {
+            var smaller = xDelta == 0 || (yDelta != 0 && xDelta > yDelta) ? Math.Abs(yDelta) : Math.Abs(xDelta);
+            var range = Enumerable.Range(1, smaller + 1).Reverse();
+
+            foreach (var i in range) {
+                if (xDelta % i == 0 && yDelta % i == 0) {
+                    return (xDelta / i, yDelta / i);
+                }
+            }
+
+            return (xDelta, yDelta);
         }
 
 
@@ -125,16 +150,6 @@ namespace AdventOfCode2019.Day12 {
 
         }
 
-        public static List<List<int>> GetPermutations(List<int> list, int length) {
-            if (length == 1) {
-                return list.Select(p => new List<int>() { p }).ToList();
-            }
-            return GetPermutations(list, length - 1)
-                .SelectMany(
-                    permutation => list.Where(phase => !permutation.Contains(phase)),
-                    (t1, t2) => t1.Concat(new List<int>() { t2 }).ToList()
-                ).ToList();
-        }
 
         public static List<List<int>> GetCoordinates(List<string> input) {
             var coordinates = new List<List<int>>();
