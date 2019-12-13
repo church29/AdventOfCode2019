@@ -17,7 +17,7 @@ namespace AdventOfCode2019.Day12 {
 
             var coordinates = GetCoordinates(lines.ToList());
             var velocities = coordinates.Select(coordinate => new List<int> { 0, 0, 0 }).ToList();
-            RunSimulation(coordinates, velocities, 10);
+            RunSimulation(coordinates, velocities, 1000);
 
             coordinates = GetCoordinates(lines.ToList());
             velocities = coordinates.Select(coordinate => new List<int> { 0, 0, 0 }).ToList();
@@ -112,6 +112,7 @@ namespace AdventOfCode2019.Day12 {
             }
 
             var counts = axisCounts.Values.ToList();
+            Console.WriteLine("Day 12: Problem 2: " );
             counts.Sort();
             var xy = GetSmallestVector(counts[0], counts[1]);
             var xyLCM = Math.Min(xy.Item1, xy.Item2) * Math.Max(counts[0], counts[1]) ;
