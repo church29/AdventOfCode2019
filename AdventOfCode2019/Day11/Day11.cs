@@ -11,25 +11,63 @@ namespace AdventOfCode2019.Day11 {
         public static void Day11() {
             var filePath = CurrentDirectory.ToString() + "/Day11/resources/input.txt";
             var lines = System.IO.File.ReadAllLines(filePath);
-            var paintedHull = PaintHull(lines.First().Split(",").Select(long.Parse).ToList());
-            Console.WriteLine("Day 11: Problem 1: " + paintedHull.Keys.Count);
+            var intCode = lines.First().Split(",").Select(long.Parse).ToList();
+            var hull = new Dictionary<(int, int), List<long>>();
+
+            hull = PaintHull(hull, new List<long>(intCode));
+            Console.WriteLine("Day 11: Problem 1: " + hull.Keys.Count);
+            PrintHull(hull);
+
+            hull = new Dictionary<(int, int), List<long>>();
+            hull.Add((0, 0), new List<long>() { 1L });
+            hull = PaintHull(hull, new List<long>(intCode));
+            Console.WriteLine("Day 11: Problem 2: ");
+            PrintHull(hull);
 
         }
 
-        public static Dictionary<(int,int), List<long>> PaintHull(List<long> intCode) {
-            var paintMap = new Dictionary<(int, int), List<long>>();
-            var point = (0, 0);
-            var direction = (0, 1);
-            var colors = new List<long>();
-            var input = 0L;
-            var output = processIntCode(intCode, 0, new List<long>() { input }, new List<long>());
-            paintMap.Add(point, new List<long>() { output.First() });
-            output = processIntCode(intCode, (int)output.Last(), new List<long>(), new List<long>());
-            while (output.Count != 0) {
-                direction = GetNewDirection(direction, (int)output.First());
-               
+        public static void PrintHull(Dictionary<(int,int), List<long>> paintedHull) {
+            var hullXCoordinates = paintedHull.Keys.Select(point => point.Item1).ToList();
+            var hullWidth = hullXCoordinates.Max() - hullXCoordinates.Min();
 
-                point = (point.Item1 + direction.Item1, point.Item2 + direction.Item2);
+            var hullYCoordinates = paintedHull.Keys.Select(point => point.Item2).ToList();
+            var hullHeight = hullYCoordinates.Max() - hullYCoordinates.Min();
+            var color = "\u2588";
+            var colors = new List<long>();
+            foreach (var y in Enumerable.Range(hullYCoordinates.Min(), hullHeight+1)) {
+                Console.Write("\n");
+                foreach (var x in Enumerable.Range(hullXCoordinates.Min(), hullWidth+1)) {
+                    if (paintedHull.TryGetValue((x, y), out colors)) {
+                        Console.Write(colors.Last() == 1 ? color : " ");
+
+                    } else {
+                        Console.Write(" ");
+                    }
+
+                }
+            }
+            Console.WriteLine("\n");
+            Console.WriteLine("\n");
+            Console.WriteLine("\n");
+            Console.WriteLine("\n");
+        }
+
+        public static Dictionary<(int,int), List<long>> PaintHull(
+            Dictionary<(int, int), List<long>> paintMap,
+            List<long> intCode
+        ){
+            long input;
+            var point = (0, 0);
+            var direction = (0, -1);
+            List<long> colors;
+
+           
+            // output, startingPosition, relativeBase
+            var output = new List<long>() { 0, 0, 0 };
+            
+            
+            while (true) {
+            
                 if (paintMap.TryGetValue(point, out colors)) {
                     input = colors.Last();
                     
@@ -37,7 +75,7 @@ namespace AdventOfCode2019.Day11 {
                     input = 0;
                 }
 
-                output = processIntCode(intCode, (int)output.Last(), new List<long>() { input }, new List<long>());
+                output = processIntCode(intCode, (int)output[1], new List<long>() { input }, new List<long>(), output[2]);
                 if (output.Count == 0) {
                     break;
                 }
@@ -48,20 +86,21 @@ namespace AdventOfCode2019.Day11 {
                 } else {
                     paintMap.Add(point, new List<long>() { output.First() });
                 }
+               
+                output = processIntCode(intCode, (int)output[1], new List<long>(), new List<long>(), output[2]);
+                direction = GetNewDirection(direction, (int)output.First());
 
-                output = processIntCode(intCode, (int)output.Last(), new List<long>(), new List<long>());
+
+                point = (point.Item1 + direction.Item1, point.Item2 + direction.Item2);
+
             }
             
-
-
             return paintMap;
         }
 
         public static (int,int) GetNewDirection((int,int) direction, int directionCode) {
-            // Turn left
-            var newDirection = direction;
             // (0, 1) => (-1, 0) => (0, -1) => (1, 0)
-            if (directionCode == 0) {
+            if (directionCode == 1) {
                 return (-direction.Item2, direction.Item1);
             // (0, 1) => (1, 0) => (0, -1) => (-1, 0)
             } else {
@@ -100,7 +139,7 @@ namespace AdventOfCode2019.Day11 {
             }
             if (opCode == 4) {
                 output.Add(value1);
-                return new List<long>() { value1, startingPosition + getIncrementFromOpCode(opCode) };
+                return new List<long>() { value1, startingPosition + getIncrementFromOpCode(opCode), relativeBase };
                
             }
             if (opCode == 9) {
@@ -139,7 +178,9 @@ namespace AdventOfCode2019.Day11 {
                 return valueAddress;
                 default:
 
-                return intCode[(int)(valueAddress + relativeBase)];
+                var index = (int)(valueAddress + relativeBase);
+                
+                return intCode[index];
 
 
             }
